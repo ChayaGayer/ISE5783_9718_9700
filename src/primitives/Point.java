@@ -2,18 +2,18 @@ package primitives;
 
 public class Point {
 	/**
-	 *The field of coordinates of type Double3, without permission
+	 *field of coordinates of Double3, 
 	 */	
 	final Double3 xyz;
 	/**
-	 *The constructor accepts three double numbers for the coordinate values
+	 *The constructor get three double numbers for the coordinate values
 	 */	
 public Point(double d1,double d2,double d3)
 {
 	this.xyz=new Double3(d1,d2,d3);
 }
 /**
- * The field of coordinates of type Double3, without permission
+ * The constructor get an object of Double3
  */
  Point(Double3 xyz){
 	this.xyz=xyz;
@@ -59,12 +59,18 @@ public Point add(Vector vec)
 * @return squared distance between two points 
 */
 
-public double distanceSquared(Point p) {
+public double distanceSquared(Point p)
+{
     return (xyz.d1 - p.xyz.d1) * (xyz.d1 - p.xyz.d1) +
         (xyz.d2 - p.xyz.d2) * (xyz.d2 - p.xyz.d2) +
         (xyz.d3 - p.xyz.d3) * (xyz.d1 - p.xyz.d3);
 }
 
+/**
+* calculate distance between two points
+* @param p- point
+* @return  distance between two points 
+*/
 
 public double distance(Point p)
 {

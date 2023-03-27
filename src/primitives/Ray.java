@@ -1,10 +1,15 @@
 
 package primitives;
 
-public class Ray {
+public class Ray
+{
 	final Point p0;
 	final Vector dir;
-
+/**
+ * constructor that get a point and vec
+ * @param dir
+ * @param p0
+ */
 	public Ray( Vector dir,  Point p0)
 	{
 		this.p0=p0;

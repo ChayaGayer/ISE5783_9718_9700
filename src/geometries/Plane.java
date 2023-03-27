@@ -7,18 +7,28 @@ public class Plane implements Geometry {
 
 	private Point p0;
 	private Vector normal;
-
-
+/**
+	 * constructor that get three points and calculate normal to the triangle
+	 * @param p1
+	 * @param p2
+	 * @param p3
+ */
+public Plane(Point p1,Point p2,Point p3)
+	{
+		this.normal=null;
+		this.p0=p1;
+	}
+/**
+ * constructor that get a point and the normal vector
+ * @param q0
+ * @param normal
+ */
 public Plane(Point q0,Vector normal)
 {
 this.p0=q0;
 this.normal=normal.normalize();
 }
-public Plane(Point p1,Point p2,Point p3)
-{
-	this.normal=null;
-	this.p0=p1;
-}
+
 public Point getP0() {
     return p0;
 }
@@ -30,9 +40,7 @@ public Vector getNormal() {
 public Vector getNormal(Point point) {
     return normal;
 }
-public Vector getNorma() {
-    return normal;
-}
+
 
 }
 
