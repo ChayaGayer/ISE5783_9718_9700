@@ -7,7 +7,8 @@ import primitives.Vector;;
  * @author user1
  *
  */
-public interface Geometry {
+public interface Geometry 
+{
 /**
  *  Method that get a point and return the normal vector at this point
  * @param p

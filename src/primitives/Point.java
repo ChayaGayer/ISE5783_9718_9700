@@ -18,6 +18,10 @@ public Point(double d1,double d2,double d3)
  Point(Double3 xyz){
 	this.xyz=xyz;
 }
+ public Double3 getXyz() {
+		return xyz;
+	}
+	
  /**
 	 * The comparison method equals
 	 */

@@ -2,13 +2,13 @@ package geometries;
 
 
 public abstract class RadialGeometry implements Geometry {
-	protected double Radius;
+	protected final double radius;
 /**
  * constructor for the radius
  * @param Radius
  */
 	public RadialGeometry( double Radius) {
-		this.Radius=Radius;
+		this.radius=Radius;
 	}
 
 }

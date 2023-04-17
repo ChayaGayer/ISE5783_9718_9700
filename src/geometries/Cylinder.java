@@ -3,9 +3,10 @@ import primitives.Ray;
 import primitives.Point;
 import primitives.Vector;
 
-public class Cylinder extends Tube {
+public class Cylinder extends Tube
+{
 
-	private double height;
+	final double height;
 	public Cylinder(double radius,Ray axisRay,double height) {
 		super(radius,axisRay);
 		this.height=height;
