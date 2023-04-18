@@ -3,9 +3,8 @@ import primitives.Point;
 import primitives.Vector;
 
 public class Sphere extends RadialGeometry  {
-	private Point center;
-	private double radius;
-		
+	private final Point center;
+	
 
 	public Sphere(Point center,double radius)
 	{   super(radius);
@@ -14,7 +13,8 @@ public class Sphere extends RadialGeometry  {
 	}
 	public Vector getNormal(Point p)
 	{
-		return p.subtract(center).normalize();
+		var x = p.subtract(center).normalize();
+		return x;
 	}
 
 }
