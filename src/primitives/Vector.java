@@ -1,6 +1,6 @@
 package primitives;
 
-
+//class for the vector
 public class Vector extends Point{
 /**
  * constructor that get three double numbers 

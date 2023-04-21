@@ -4,7 +4,7 @@ import primitives.Point;
 import primitives.Vector;;
 /**
  * an interface for the geometry
- * @author user1
+ * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
 public interface Geometry 

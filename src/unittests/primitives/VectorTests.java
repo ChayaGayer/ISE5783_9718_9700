@@ -11,7 +11,7 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * @author user1
+ * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
 

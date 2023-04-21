@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import geometries.Triangle;
 
 /**
- * @author user1
+ * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
 

@@ -1,6 +1,6 @@
 
 package primitives;
-
+//class for the ray
 public class Ray
 {
 	final Point p0;

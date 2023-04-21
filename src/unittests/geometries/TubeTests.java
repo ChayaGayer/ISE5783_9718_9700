@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author user1
+ * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
 

@@ -2,17 +2,17 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
-
+// a class for a plane
 public class Plane implements Geometry {
 
 	private Point p0;
 	private Vector normal;
-/**
-	 * constructor that get three points and calculate normal to the triangle
-	 * @param p1
-	 * @param p2
-	 * @param p3
- */
+	/**
+	 *  constructor of plane that gets 3 points. save one and calculates the normal to the plane
+	 * @param p1 first point in the plane
+	 * @param p2 second point in the plane
+	 * @param p3 third point in the plane
+	 */
 public Plane(Point p1,Point p2,Point p3)
 	{
 	Vector v1 = (p1.subtract(p2));//get one vector on plane
@@ -32,15 +32,27 @@ public Plane(Point q0,Vector normal)
 this.p0=q0;
 this.normal=normal.normalize();
 }
-
+/**
+ * get the point in the plane function
+ * @return the point in the plane
+ */
 public Point getP0() {
     return p0;
 }
+/**
+ * get normal to the plane function
+ * @return normal to the plane
+ */
 public Vector getNormal() {
     return normal;
 }
 
 @Override
+/**
+ *  function that returns the vector normal to the plain in the point p
+ *  @param p is a point
+ *  @return the the normal to the plane
+ */
 public Vector getNormal(Point point) {
     return normal;
 }

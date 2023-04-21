@@ -3,22 +3,35 @@ import primitives.Ray;
 import primitives.Util;
 import primitives.Point;
 import primitives.Vector;
-
+//class for the tube
 public class Tube extends RadialGeometry
 {
 	protected Ray axisRay;
-
+	/**
+	 * constructor of Tube
+	 * @param axisRay is a ray of the tube
+	 * @param radius of the tube
+	 */
 	public Tube(double radius,Ray axisRay)
 	{
 		super(radius);
 		this.axisRay=axisRay;
 		
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	public Ray getAxisRay() {
         return axisRay;
     
 	}
 	@Override
+	/**
+	 * function that returns the vector normal to the tube in the point p
+	 * @param point is a point
+	 * @return the normal to the triangle in the point
+	 */
     public Vector getNormal(Point point)
 	{
 			Vector dir = axisRay.getDir();

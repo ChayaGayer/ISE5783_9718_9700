@@ -11,7 +11,7 @@ import primitives.Vector;
 import geometries.Sphere;
 
 /**
- * @author user1
+ * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
 
