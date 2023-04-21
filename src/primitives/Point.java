@@ -15,7 +15,7 @@ public Point(double d1,double d2,double d3)
 /**
  * The constructor get an object of Double3
  */
- public Point(Double3 xyz){
+ Point(Double3 xyz){
 	this.xyz=xyz;
 }
  public Double3 getXyz() {

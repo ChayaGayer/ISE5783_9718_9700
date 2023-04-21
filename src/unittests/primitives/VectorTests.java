@@ -15,10 +15,7 @@ import primitives.Vector;
  *
  */
 
-
-
-
-
+//tests for the vector
 class VectorTests {
 
   /** Test method for {@link primitives.Vector#add(primitives.Vector)}.
