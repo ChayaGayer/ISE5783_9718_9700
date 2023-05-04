@@ -7,7 +7,7 @@ import primitives.Vector;;
  * @author chaya gayer 214309718, shira gayer 214309700
  *
  */
-public interface Geometry 
+public interface Geometry extends Intersectable 
 {
 /**
  *  Method that get a point and return the normal vector at this point

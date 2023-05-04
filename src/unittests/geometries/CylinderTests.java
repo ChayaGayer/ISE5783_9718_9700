@@ -40,5 +40,10 @@ public class CylinderTests {
         // TC11: Test for points on the border between the cylinder's side and second base (where the axis "ends", by the height) - decision: the normal points as if it's a point on the cylinder's side!
         assertEquals("Bad normal to cylinder - for points on the cylinder's second base", new Vector(0,1,0), cyl.getNormal(new Point(0, 5, 3)));
 	}
+	@Test
+	public void testFindIntersections() {
+		
+	}
+
 	
 }
