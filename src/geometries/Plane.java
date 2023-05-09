@@ -59,7 +59,15 @@ public Vector getNormal() {
 public Vector getNormal(Point point) {
     return normal;
 }
+/**
+ * Finds the intersection point(s) of a given Ray with the Plane.
+*@param myRay the Ray to intersect with the Plane
+*@return a List of Point objects representing the intersection point(s) of the Ray and the Plane.
+If no intersection occurs, returns null.
+*@throws IllegalArgumentException if the given Ray or any of its components are null or uninitialized
+ */
 @Override
+
 public List<Point> findIntersections(Ray myRay) {
 	double nv = normal.dotProduct(myRay.getDir());
 	if (Util.isZero(nv))
@@ -69,6 +77,7 @@ public List<Point> findIntersections(Ray myRay) {
 	
 	try 
 	{
+		// Calculate the parameter t of the Ray equation for the intersection point
 		Vector pSubtractP0 = p0.subtract(myRay.getP0());
 		double t = Util.alignZero((normal.dotProduct(pSubtractP0))/nv);
 
@@ -78,6 +87,7 @@ public List<Point> findIntersections(Ray myRay) {
 		}
 		return List.of(new Point((myRay.getPoint(t)).getXyz()));
 	}
+	// If an exception is thrown during the calculation of the intersection, return null
 	catch(Exception ex) 
 	{
 		return null;

@@ -113,7 +113,7 @@ public void testFindIntersections() {
     assertNull("The ray starts after the tangent point", sphere.findIntersections(new Ray(new Vector(0, -2, 1),new Point(1, 1, 1))));
 
     // ** Group: Special cases
-    // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
+    // TC22: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
     assertNull("The ray's line is outside, ray is orthogonal to ray start to sphere's center line", sphere.findIntersections(new Ray(new Vector(0, -2, 1),new Point(-0.5, 0, 0))));
 
 }

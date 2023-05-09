@@ -33,7 +33,7 @@ class GeometriesTests {
 			//=====Empty body collection (BVA)=====//
 			Geometries collection= new Geometries();
 			assertNull("An empty body collection must return null", collection.findIntersections(new Ray(new Vector(9,5,-1),new Point(-4, -3, 2))));
-			
+
 			//=====No cut shape (BVA)=====//
 			Sphere sphere = new Sphere(new Point(1, 0, 0), 1); 
 			Triangle triangle = new Triangle(new Point(-4,0,0), new Point(0, 0, 5), new Point(0, -5, 0));
