@@ -1,6 +1,8 @@
 
 package primitives;
 import static primitives.Util.*;
+import java.util.List;
+
 //class for the ray
 public class Ray
 {
@@ -48,6 +50,30 @@ public class Ray
 		Vector vec=(this.dir).scale(t);
 		return (this.p0).add(vec);
 	}
+	/**
+	Finds the closest point in a given list of points to a reference point.
+	@param pointList The list of points to search through.
+	@return The closest point to the reference point. Returns null if the pointList is empty.
+	*/
+	public Point findClosestPoint(List<Point> pointList) {
+        Point closestPoint = null;
+        double minDistance = Double.MAX_VALUE;
+        double pointDistance; // the distance between the "this.p0" to each point in the list
+
+        if (!pointList.isEmpty()) {
+            for (var pointInList : pointList) {
+                pointDistance = this.p0.distance(pointInList);
+                if (pointDistance < minDistance) {
+                    minDistance = pointDistance;
+                    closestPoint = pointInList;
+                }
+            }
+        }
+        return closestPoint;
+    }
+
+	
+	
 
 
 }

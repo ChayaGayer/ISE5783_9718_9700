@@ -11,94 +11,122 @@ import primitives.*;
  * @author chaya gayer ,shira gayer
  *
  */
-public class Camera 
-{
-	private Point p0;    //location
-	private Vector vUp, vTo, vRight; 
-	private double width, height, distance;
-	/**
-	 * point p0
-	 * @return p0
-	 */
-	
-	public Point getP0() {
-		return p0;
-	}
-	/**
-	 * vector up
-	 * @return vUp
-	 */
-	public Vector getvUp() {
-		return vUp;
-	}
-	/**
-	 * vector To
-	 * @return vTo
-	 */
-	public Vector getvTo() {
-		return vTo;
-	}
-	/**
-	 * vector right
-	 * @return vRight
-	 */
-	public Vector getvRight() {
-		return vRight;
-	}
-	/**
-	 * the width
-	 * @return width
-	 */
-	public double getWidth() {
-		return width;
-	}
-	/**
-	 * height
-	 * @return height
-	 */
-	public double getHeight() {
-		return height;
-	}
-	/**
-	 * distance
-	 * @return distance
-	 */
-	public double getDistance() {
-		return distance;
-	}
-	/**
-	 * 
-	 * @param p0
-	 * @param vTo
-	 * @param vUp
-	 *  Camera constructor: builds a camera by moving a starting point vector, and viewing a vector up.
-	 *  View vector and up vector must be orthogonal to each other, and if not, an exception is thrown.
-	 */
-	public Camera(Point p0, Vector vTo, Vector vUp) {
-		if(!isZero(vUp.dotProduct(vTo)))
-			throw new IllegalArgumentException();
-		this.p0 = p0;
-		this.vUp = vUp.normalize();
-		this.vTo = vTo.normalize();
-		this.vRight=(vTo.crossProduct(vUp)).normalize();
-	}
-	/**
-	 * Setting the size of the camera display: sets the size of the camera by moving the width and height.
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	public Camera setVPSize(double width, double height)
-	{
-		this.width=width;
-		this.height=height;
-		return this;	
-	}
-	/**
-	 * Setting the distance of the camera display: defines the distance of the camera display from a starting point.
-	 * @param distance
-	 * @return
-	 */
+/**
+ * The Camera class represents a virtual camera used for rendering images.
+ * It defines the camera's location, orientation, size, distance, and provides methods for rendering and image manipulation.
+ */
+public class Camera {
+    private Point p0; // The location of the camera
+    private Vector vUp; // The up vector of the camera
+    private Vector vTo; // The view vector of the camera
+    private Vector vRight; // The right vector of the camera
+    private double width; // The width of the camera display
+    private double height; // The height of the camera display
+    private double distance; // The distance of the camera display from the location
+    private ImageWriter imageWriter; // The image writer used for output
+    private RayTracerBase rayTracer; // The ray tracer used for rendering
+
+    /**
+     * Returns the location of the camera.
+     *
+     * @return The location of the camera.
+     */
+    public Point getP0() {
+        return p0;
+    }
+
+    /**
+     * Returns the up vector of the camera.
+     *
+     * @return The up vector of the camera.
+     */
+    public Vector getvUp() {
+        return vUp;
+    }
+
+    /**
+     * Returns the view vector of the camera.
+     *
+     * @return The view vector of the camera.
+     */
+    public Vector getvTo() {
+        return vTo;
+    }
+
+    /**
+     * Returns the right vector of the camera.
+     *
+     * @return The right vector of the camera.
+     */
+    public Vector getvRight() {
+        return vRight;
+    }
+
+    /**
+     * Returns the width of the camera display.
+     *
+     * @return The width of the camera display.
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * Returns the height of the camera display.
+     *
+     * @return The height of the camera display.
+     */
+    public double getHeight() {
+        return height;
+    }
+
+    /**
+     * Returns the distance of the camera display.
+     *
+     * @return The distance of the camera display.
+     */
+    public double getDistance() {
+        return distance;
+    }
+
+    /**
+     * Constructs a Camera object with the specified location, view vector, and up vector.
+     * The view vector and up vector must be orthogonal to each other, otherwise an IllegalArgumentException is thrown.
+     *
+     * @param p0   The location of the camera.
+     * @param vTo  The view vector of the camera.
+     * @param vUp  The up vector of the camera.
+     * @throws IllegalArgumentException If the view vector and up vector are not orthogonal.
+     */
+    public Camera(Point p0, Vector vTo, Vector vUp) {
+        if (!isZero(vUp.dotProduct(vTo)))
+            throw new IllegalArgumentException("The view vector and up vector must be orthogonal");
+
+        this.p0 = p0;
+        this.vUp = vUp.normalize();
+        this.vTo = vTo.normalize();
+        this.vRight = vTo.crossProduct(vUp).normalize();
+    }
+
+    /**
+     * Sets the size of the camera display.
+     *
+     * @param width  The width of the camera display.
+     * @param height The height of the camera display.
+     * @return The Camera object itself.
+     */
+    public Camera setVPSize(double width, double height) {
+        this.width = width;
+        this.height = height;
+        return this;
+    }
+
+    /**
+     * Sets the distance of the camera display.
+     *
+     * @param distance The distance of the camera display.
+     * @return The Camera object itself.
+     */
 	public Camera setVPDistance(double distance) {
 		this.distance=distance;
 		return this;
@@ -135,10 +163,94 @@ public class Camera
 		    return new Ray( pIJ.subtract(this.p0),this.p0);
 		}
 		
+	/**
 
-		
+	Sets the ray tracer used for rendering the image.
+	@param rayTracer The ray tracer object.
+	@return The Camera object itself.
+	*/
+	public Camera setRayTracer(RayTracerBase rayTracer) {
+	this.rayTracer = rayTracer;
+	return this;
+	}
+	/**
+
+	Sets the image writer used for output.
+	@param imageWriter The image writer object.
+	@return The Camera object itself.
+	*/
+	public Camera setImageWriter(ImageWriter imageWriter) {
+	this.imageWriter = imageWriter;
+	return this;
+	}
+	/**
+
+	Renders the image using the configured ray tracer and image writer.
+
+	@throws UnsupportedOperationException If the image writer or ray tracer is missing.
+	*/
+	public void renderImage() {
+	if (this.imageWriter == null)
+	throw new UnsupportedOperationException("Missing imageWriter");
+	if (this.rayTracer == null)
+	throw new UnsupportedOperationException("Missing rayTracerBase");
+
+	for (int i = 0; i < this.imageWriter.getNy(); i++) {
+	for (int j = 0; j < this.imageWriter.getNx(); j++) {
+	Color color = castRay(j, i);
+	this.imageWriter.writePixel(j, i, color);
+	}
+	}
 	}
 
+	/**
 
+	Casts a ray through a specified pixel and returns the color of the intersection point.
+	@param j The x-coordinate of the pixel.
+	@param i The y-coordinate of the pixel.
+	@return The color of the intersection point.
+	*/
+	private Color castRay(int j, int i) {
+	Ray ray = constructRay(this.imageWriter.getNx(),this.imageWriter.getNy(),j,i);
+	return this.rayTracer.traceRay(ray);
+	}
+	/**
 
+	Prints a grid on top of the image, with equal square intervals.
 
+	@param interval The interval between the grid's rows and columns.
+
+	@param color The color of the grid.
+
+	@throws MissingResourceException If the image writer is null.
+
+	@throws IllegalArgumentException If the interval is not a divisor of both Nx and Ny.
+	*/
+	public void printGrid(int interval, Color color) throws MissingResourceException, IllegalArgumentException {
+	if (this.imageWriter == null)
+	throw new MissingResourceException("The render's field imageWriter mustn't be null", "ImageWriter", null);
+
+	if (this.imageWriter.getNx() % interval != 0 || this.imageWriter.getNy() % interval != 0)
+	throw new IllegalArgumentException("The grid is supposed to have squares, therefore the given interval must be a divisor of both Nx and Ny");
+
+	for (int i = 0; i < this.imageWriter.getNx(); i++) {
+	for (int j = 0; j < this.imageWriter.getNy(); j++) {
+	if (i % interval == 0 || (i + 1) % interval == 0 || j % interval == 0 || (j + 1) % interval == 0)
+	this.imageWriter.writePixel(i, j, color);
+	}
+	}
+	//return this;
+	}
+
+	/**
+
+	Writes the image to an output file.
+	@throws MissingResourceException If the image writer is null.
+	*/
+	public void writeToImage() throws MissingResourceException {
+	if (this.imageWriter == null)
+	throw new MissingResourceException("The render's field imageWriter mustn't be null", "ImageWriter", null);
+	this.imageWriter.writeToImage();
+	//return this;
+	}
+}

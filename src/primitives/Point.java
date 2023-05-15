@@ -5,6 +5,7 @@ public class Point {
 	 *field of coordinates of Double3, 
 	 */	
 	final Double3 xyz;
+	 public static final Point ZERO =new Point(Double3.ZERO) ;
 	/**
 	 *The constructor get three double numbers for the coordinate values
 	 */	
