@@ -189,18 +189,24 @@ public class Camera {
 
 	@throws UnsupportedOperationException If the image writer or ray tracer is missing.
 	*/
-	public void renderImage() {
-	if (this.imageWriter == null)
-	throw new UnsupportedOperationException("Missing imageWriter");
+	public Camera renderImage()
+	{
+	if (this.imageWriter == null||this.p0==null||this.vUp==null||this.vRight==null||this.vTo==null)
+	    throw new MissingResourceException("Missing filed in camera","","");
 	if (this.rayTracer == null)
 	throw new UnsupportedOperationException("Missing rayTracerBase");
 
-	for (int i = 0; i < this.imageWriter.getNy(); i++) {
-	for (int j = 0; j < this.imageWriter.getNx(); j++) {
-	Color color = castRay(j, i);
-	this.imageWriter.writePixel(j, i, color);
+	for (int i = 0; i < this.imageWriter.getNy(); i++) 
+	{
+	   for (int j = 0; j < this.imageWriter.getNx(); j++)
+	     {
+		
+	      Color color = castRay(this.imageWriter.getNx(),this.imageWriter.getNy(),j, i);
+	 
+	    this.imageWriter.writePixel(j, i, color);
+	     }
 	}
-	}
+	return this;
 	}
 
 	/**
@@ -210,8 +216,8 @@ public class Camera {
 	@param i The y-coordinate of the pixel.
 	@return The color of the intersection point.
 	*/
-	private Color castRay(int j, int i) {
-	Ray ray = constructRay(this.imageWriter.getNx(),this.imageWriter.getNy(),j,i);
+	private Color castRay(int nX,int nY,int j, int i) {
+	Ray ray = constructRay(nX,nY,j,i);
 	return this.rayTracer.traceRay(ray);
 	}
 	/**
@@ -226,31 +232,32 @@ public class Camera {
 
 	@throws IllegalArgumentException If the interval is not a divisor of both Nx and Ny.
 	*/
-	public void printGrid(int interval, Color color) throws MissingResourceException, IllegalArgumentException {
-	if (this.imageWriter == null)
-	throw new MissingResourceException("The render's field imageWriter mustn't be null", "ImageWriter", null);
-
-	if (this.imageWriter.getNx() % interval != 0 || this.imageWriter.getNy() % interval != 0)
-	throw new IllegalArgumentException("The grid is supposed to have squares, therefore the given interval must be a divisor of both Nx and Ny");
-
-	for (int i = 0; i < this.imageWriter.getNx(); i++) {
-	for (int j = 0; j < this.imageWriter.getNy(); j++) {
-	if (i % interval == 0 || (i + 1) % interval == 0 || j % interval == 0 || (j + 1) % interval == 0)
-	this.imageWriter.writePixel(i, j, color);
-	}
-	}
-	//return this;
-	}
-
+	
+	public void printGrid(int interval , Color color )
+    {
+        // check that the image writer is not missing
+        if(imageWriter == null)
+            throw new MissingResourceException("image writer is missing", "Camera", "imageWriter");
+        
+        // paint all the pixels in the grid
+        for (int i = 0; i < imageWriter.getNx(); i++)
+        {
+            for (int j = 0; j < imageWriter.getNy(); j++)
+            {
+                if (j % interval == 0 || i % interval == 0)
+                    imageWriter.writePixel(i, j, color);
+            }
+        }
+    }
 	/**
 
 	Writes the image to an output file.
 	@throws MissingResourceException If the image writer is null.
 	*/
-	public void writeToImage() throws MissingResourceException {
+	public Camera writeToImage() throws MissingResourceException {
 	if (this.imageWriter == null)
 	throw new MissingResourceException("The render's field imageWriter mustn't be null", "ImageWriter", null);
 	this.imageWriter.writeToImage();
-	//return this;
+	return this;
 	}
 }

@@ -47,9 +47,12 @@ public class Tube extends RadialGeometry
 			return point.subtract(o).normalize();
 		}
 
+	 /**
+	  * halper func for findGeoIntersections
+	  */
 	 @Override
-	   public List<Point> findIntersections(Ray ray)
-	   {
-	   	return null;
-	   }
+		protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 }

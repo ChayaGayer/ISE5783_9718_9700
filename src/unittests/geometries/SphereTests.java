@@ -76,11 +76,12 @@ public void testFindIntersections() {
 
     // ** Group: Ray's line goes through the center
     // TC13: Ray starts before the sphere (2 points)
+    
     result = sphere.findIntersections(new Ray(new Vector(0, 1, 0),new Point(1, -2, 0)));
     assertEquals("Wrong number of points", 2, result.size());
     if (result.get(0).getXyz().getD1() > result.get(1).getXyz().getD1())
         result = List.of(result.get(1), result.get(0));
-    assertEquals("Ray crosses sphere", List.of(new Point(1, 1, 0), new Point(1, -1, 0)), result);
+    assertEquals("Ray crosses sphere", List.of(new Point(1,- 1, 0), new Point(1, 1, 0)), result);
     
     // TC14: Ray starts at sphere and goes inside (1 points)
     result = sphere.findIntersections(new Ray(new Vector(0, 1, 0),new Point(1, -1, 0)));

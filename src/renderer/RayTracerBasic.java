@@ -1,52 +1,84 @@
 package renderer;
 
-
+import java.util.List;
+import static primitives.Util.*;
+import geometries.Intersectable.GeoPoint;
+import lighting.LightSource;
+import lighting.SpotLight;
 import primitives.Color;
-import primitives.Point;
+import primitives.Double3;
+import primitives.Material;
 import primitives.Ray;
+import primitives.Vector;
 import scene.Scene;
 
-import java.util.List;
-
-/**
- * Basic implementation of a ray tracer.
- * It traces a ray through the scene and returns the color of the closest intersection point.
- */
-public class RayTracerBasic extends RayTracerBase {
-
-    /**
-     * Constructs a RayTracerBasic object with the given scene.
-     *
-     * @param scene The scene to be rendered.
-     */
+public class RayTracerBasic extends RayTracerBase{
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
 
-    /**
-     * Traces a ray through the scene and calculates the color of the closest intersection point.
-     *
-     * @param ray The ray to be traced.
-     * @return The color of the closest intersection point, or the background color if no intersections occur.
-     */
     @Override
     public Color traceRay(Ray ray) {
-        List<Point> intersections = scene.geometries.findIntersections(ray);
-        if (intersections != null) {
-            Point closestPoint = ray.findClosestPoint(intersections);
-            return calculateColor(closestPoint);
+        List<GeoPoint> points = scene.geometries.findGeoIntersections(ray);
+
+        if (points != null) {
+            GeoPoint closePoint = ray.findClosestGeoPoint(points);
+            return calcColor(closePoint, ray);
         }
-        // No intersections
+        //no points
         return scene.background;
     }
-
     /**
-     * Calculates the color at a given point in the scene.
+     * Get the color of an intersection point
      *
-     * @param point The point in the scene.
-     * @return The color at the given point.
+     * @param point point of intersection
+     * @return Color of the intersection point
      */
-    private Color calculateColor(Point point) {
-        return scene.ambientLight.getIntensity();
+    private Color calcColor(GeoPoint point, Ray ray)
+    {/*if (point==null)
+    	return Color.BLACK;
+    else {*/
+        return this.scene.ambientLight.getIntensity()
+                
+                .add(calcLocalEffects(point, ray));
     }
+    //}
+    
+
+    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+    	Color color = gp.geometry.getEmission();
+    	Vector v = ray.getDir (); Vector n = gp.geometry.getNormal(gp.point);
+    	double nv = alignZero(n.dotProduct(v)); if (nv == 0) return color;
+    	Material material = gp.geometry.getMaterial();
+
+    	for (LightSource lightSource : scene.lights) {
+    	Vector l = lightSource.getL(gp.point);
+    	double nl = alignZero(n.dotProduct(l));
+    	if (nl * nv > 0) { // sign(nl) == sing(nv)
+    	Color iL = lightSource.getIntensity(gp.point);
+    	color = color.add(iL.scale(calcDiffusive(material, nl)),
+
+    	iL.scale(calcSpecular(material, n, l, nl, v)));
+
+    	}
+    	}
+    	return color;
+    	}
+
+    private Double3 calcDiffusive(Material m, double nl) {
+       if(nl<0)
+    	   return m.kD.scale(-nl);
+       else
+    	   return m.kD.scale(nl);
+    	   
+    	   
+    }
+
+    private Double3 calcSpecular( Material m , Vector n, Vector l,  double nl, Vector v) 
+    {
+      return m.kS.scale(Math.pow(Math.max(0, v.scale(-1).dotProduct(l.subtract(n.scale(2*nl)))), m.nShininess));
+       
+    }
+
+
 }

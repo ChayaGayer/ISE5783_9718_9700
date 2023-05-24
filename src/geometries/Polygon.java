@@ -1,5 +1,5 @@
 package geometries;
-
+import static primitives.Util.*;
  
 import static primitives.Util.isZero;
 import java.util.List;
@@ -11,7 +11,7 @@ import primitives.Vector;
 /** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
  * @author Dan */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
    /** List of polygon's vertices */
    protected final List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -78,11 +78,62 @@ public class Polygon implements Geometry {
       }
    }
 
+   /**
+    * Calculates and returns the normal vector of the polygon at the specified point.
+    *
+    * @param point The point on the polygon to calculate the normal vector.
+    * @return The normal vector of the polygon at the specified point.
+    */
    @Override
-   public Vector getNormal(Point point) { return plane.getNormal(); }
+   public Vector getNormal(Point point) {
+       return plane.getNormal();
+   }
+   
+   /**
+    * Finds the geometric intersections between the polygon and the given ray.
+    *
+    * @param ray The ray to find intersections with.
+    * @return A list of geometric intersection points between the polygon and the ray,
+    *         or null if there are no intersections.
+    */
    @Override
-   public List<Point> findIntersections(Ray ray)
-   {
-   	return null;
+   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+       List<GeoPoint> intersections = plane.findGeoIntersections(ray);
+
+       // Check if the plane of the polygon intersects with the ray
+       // if there's no intersection with the plane, there's no intersection with the polygon.
+       if (intersections == null) {
+           return null;
+       }
+
+       Point p0 = ray.getP0();
+       Vector v = ray.getDir();
+
+       Vector v1 = vertices.get(1).subtract(p0);
+       Vector v2 = vertices.get(0).subtract(p0);
+
+       double sign = v.dotProduct(v1.crossProduct(v2));
+
+       if (isZero(sign)) {
+           return null;
+       }
+       
+       boolean positive = sign > 0;
+
+       for (int i = vertices.size() - 1; i > 0; --i) {
+           v1 = v2;
+           v2 = vertices.get(i).subtract(p0);
+           sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+
+           if (isZero(sign)) {
+               return null;
+           }
+
+           if (positive != (sign > 0)) {
+               return null;
+           }
+       }
+
+       return List.of(new GeoPoint(this, intersections.get(0).point));
    }
 }

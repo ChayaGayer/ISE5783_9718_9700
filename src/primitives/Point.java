@@ -68,7 +68,7 @@ public double distanceSquared(Point p)
 {
     return (xyz.d1 - p.xyz.d1) * (xyz.d1 - p.xyz.d1) +
         (xyz.d2 - p.xyz.d2) * (xyz.d2 - p.xyz.d2) +
-        (xyz.d3 - p.xyz.d3) * (xyz.d1 - p.xyz.d3);
+       (xyz.d3 - p.xyz.d3) * (xyz.d3 - p.xyz.d3);
 }
 
 /**

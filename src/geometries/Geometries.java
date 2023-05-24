@@ -11,7 +11,7 @@ import primitives.*;
  * Geometries' class.
  * Represents a collection of geometries.
  */
-public class Geometries implements Intersectable
+public class Geometries extends Intersectable
 {
 
 	private List<Intersectable> geometriesInScene;
@@ -46,14 +46,18 @@ public class Geometries implements Intersectable
 	
 	 
 	
+	/**
+	 * function that finds all the geometries that the ray hits
+	 * @param ray from the center of the camera to the center of the pixel
+	 * @return a list of all the geoPoints that the ray hit in the pixel
+	 */
 	@Override
-	public List<Point> findIntersections(Ray myRay) {
-		if(this.geometriesInScene.isEmpty())
-			return null;
-		List<Point> temp = new ArrayList<Point>();
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+
+		List<GeoPoint> temp = new ArrayList<GeoPoint>();
 		for (Intersectable intersectable : geometriesInScene) 
 		{
-			List<Point> intersection = intersectable.findIntersections(myRay);
+			List<GeoPoint> intersection = intersectable.findGeoIntersectionsHelper(ray);
 			if (intersection != null)
 				temp.addAll(intersection); 
 		}
@@ -61,6 +65,7 @@ public class Geometries implements Intersectable
 		if (temp.isEmpty())
 			return null;
 		return temp;	
+
 	}
 		 
 

@@ -7,42 +7,33 @@ import primitives.Double3;
  *
  * this class represented us the Ambient Light (תאורה סביבתית)
  */
-public class AmbientLight {
+public class AmbientLight extends Light{
 
-    private final Color intensity; // intensity (עצמה) of ambient Light
+    //private final Color intensity; // intensity (עצמה) of ambient Light
     
     public static final AmbientLight NONE=new AmbientLight(Color.BLACK,Double3.ZERO);
     
 
+
+
     /**
-     * constructor for knowing the intensity after the light factor
-     *
-     * @param Ia - Light illumination (RGB עצמת האור לפי קומפוננטות)
-     * @param Ka - Light factor - מקדם הנחתה של האור
+     * default constructor that create ambientLight in black
      */
-    public AmbientLight(Color Ia, Double3 Ka)
+    public AmbientLight()
     {
-        //calculation of the intensity after the light factor
-        this.intensity = Ia.scale(Ka);
-    }
-    /**
-     * A constructor that accepts a value of type double for the attenuation coefficient �𝒌
-     * @param Ia - Light illumination (RGB עצמת האור לפי קומפוננטות)
-     * @param Ka - Light factor - מקדם הנחתה של האור
-     
-     */
-    public AmbientLight(Color Ia, double Ka)
-    {
-        
-        this.intensity = Ia.scale(Ka);
+        super(Color.BLACK);
     }
 
     /**
-     * getter for intensity
-     * @return the intensity
+     * create AmbientLight of the scene
+     * @param Ia the color of ambientLight
+     * @param Ka factor of the ambientLight
      */
-    public Color getIntensity() 
-    {
-        return this.intensity;
+    public AmbientLight(Color Ia , Double3 Ka) {
+        super(Ia.scale(Ka));
+    }
+
+    public AmbientLight(Color in) {
+        super(in);
     }
 }
