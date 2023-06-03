@@ -22,18 +22,24 @@ public class AmbientLight extends Light{
     public AmbientLight()
     {
         super(Color.BLACK);
-    }
+   }
 
     /**
      * create AmbientLight of the scene
      * @param Ia the color of ambientLight
      * @param Ka factor of the ambientLight
      */
-    public AmbientLight(Color Ia , Double3 Ka) {
+    public AmbientLight(Color Ia , Double3 Ka) 
+    {
         super(Ia.scale(Ka));
     }
 
     public AmbientLight(Color in) {
         super(in);
     }
+
+	public AmbientLight(Color ia, double d) {
+		// TODO Auto-generated constructor stub
+		super(ia.scale(new Double3(d,d,d)));
+	}
 }

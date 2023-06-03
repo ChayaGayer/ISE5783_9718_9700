@@ -13,12 +13,15 @@ public abstract class Intersectable
 	public List<Point> findIntersections(Ray ray) {
 		 var geoList = findGeoIntersections(ray);
 		 return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
+		 
 		}
+	
 
 
 
     //======== the NVI design pattern =======//
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+    
 
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
