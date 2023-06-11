@@ -8,6 +8,7 @@ import java.util.MissingResourceException;
 //class for the ray
 public class Ray
 {
+	private static final double DELTA = 0.1;
 	final Point p0;
 	final Vector dir;
 /**
@@ -100,6 +101,17 @@ public class Ray
 	            }
 	        }
 	        return closestPoint;
+	    }
+	 /**
+	     * Constructor that moves the ray by DELTA
+	     * @param p0 point
+	     * @param direction direction (must be normalized)
+	     * @param normal normal
+	     */
+	    public Ray(Point p0, Vector direction, Vector normal) {
+	        Vector delta = normal.scale(normal.dotProduct(direction) > 0 ? DELTA : - DELTA);
+	        this.p0 = p0.add(delta);
+	        this.dir = direction;
 	    }
 	
 

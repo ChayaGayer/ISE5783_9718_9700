@@ -25,6 +25,8 @@ public class Camera {
     private double distance; // The distance of the camera display from the location
     private ImageWriter imageWriter; // The image writer used for output
     private RayTracerBase rayTracer; // The ray tracer used for rendering
+    private int numRowPixels;
+    private int numColPixels;
 
     /**
      * Returns the location of the camera.
@@ -249,6 +251,13 @@ public class Camera {
             }
         }
     }
+	public Camera setPixels(int amountRowPixels, int amountColumnPixels) {
+	
+        this.numRowPixels = amountRowPixels;
+        this.numColPixels = amountColumnPixels;
+        return this;
+	}
+   
 	/**
 
 	Writes the image to an output file.
