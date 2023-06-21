@@ -16,7 +16,7 @@ import scene.Scene;
 
 public class RayTracerBasic extends RayTracerBase
 {
-	private static final double DELTA = 0.1;
+	//private static final double DELTA = 0.1;
 	private static final int MAX_CALC_COLOR_LEVEL = 10;
 	private static final double MIN_CALC_COLOR_K = 0.001;
 	 private static final Double3 INIT_CALC_COLOR_K = Double3.ONE;
@@ -31,6 +31,24 @@ public class RayTracerBasic extends RayTracerBase
         return intersections == null ? scene.background : calcColor(ray.findClosestGeoPoint(intersections), ray);
     }
     /**
+	  * @param rays List of surrounding rays
+	  * @return average color
+	  */
+	 public Color traceRay(List<Ray> rays) 
+	 {
+	 	if(rays == null)
+	 		return scene.background;
+	     Color color = scene.background;
+	     for (Ray ray : rays) 
+	     {
+	     	color = color.add(traceRay(ray));
+	     }
+	     color = color.add(scene.ambientLight.getIntensity());
+	     int size = rays.size();
+	     return color.reduce(size);
+	
+	 }
+	
     
     /**
      * Calculates reflected ray and refraction ray
@@ -49,7 +67,6 @@ public class RayTracerBasic extends RayTracerBase
     }
 
     /**
-     * TODO
      * @param geoPoint
      * @param level
      * @param color
@@ -139,7 +156,8 @@ public class RayTracerBasic extends RayTracerBase
 
 
     
-    private boolean unshaded(GeoPoint geoPoint, Vector l, Vector n, LightSource lightSource) {
+    @SuppressWarnings("unused")
+	private boolean unshaded(GeoPoint geoPoint, Vector l, Vector n, LightSource lightSource) {
         Ray lightRay = new Ray(geoPoint.point, l.scale(-1), n);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
 

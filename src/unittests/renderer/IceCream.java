@@ -28,7 +28,7 @@ scene.geometries.add( //
 new Sphere(new Point(25, -30, 100),30).setEmission(new Color(21,0, 81))
 .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(20).setKt(0).setKr(0)),
 new Triangle(new Point(-45, -20, 100), new Point(45, -20,100), new Point(0, 115, 150))
-.setEmission(new Color(153,76,0)).setMaterial(new Material().setkD(0).setkS(0.8).setnShininess(6)),
+.setEmission(new Color(153,76,0)).setMaterial(new Material().setkD(0).setkS(0.8).setnShininess(6).setKt(0.6)),
 new Sphere(new Point(-25, -30, 100),30).setEmission(new Color(java.awt.Color.BLACK))
                 .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(30)),
 new Sphere(new Point(0, -70, 100),30).setEmission(new Color(102, 32, 20))
@@ -39,14 +39,15 @@ new Plane(new Point(1500, 1500, 0),new Point(-1500, -1500, 3850), new Point(-150
                     .setEmission(new Color(java.awt.Color.BLACK).reduce(5))
                     .setMaterial(new Material().setkD(0.4).setkS(0.3).setnShininess(2000));
 scene.lights.add(new DirectionalLight(new Color(java.awt.Color.darkGray), new Vector(-0.5, 0.5, 0)));
-scene.lights.add(new SpotLight(new Color(1020, 400, 400),new Point(40,-40,-160), new Vector(-1, 1, 4))
+scene.lights.add(new SpotLight(new Color(255, 400, 400),new Point(40,-40,-160), new Vector(-1, 1, 4))
              .setkC(1).setkL(4E-4).setkQ(2E-5));
 scene.lights.add(new SpotLight(new Color(700, 400, 400),new Point(300, 30,0), new Vector(-2, 3, 3))
               .setkC(1).setkL(4E-4).setkQ(2E-5));
+scene.lights.add(new SpotLight(new Color(700, 400, 400),new Point(100,-100,0), new Vector(-2,1,1))
+        .setkC(1).setkL(4E-4).setkQ(2E-5));
 camera.setImageWriter(new ImageWriter("iceCream", 600, 600))
 .setRayTracer(new RayTracerBasic(scene));
 camera.renderImage(); //
-camera.printGrid(50, new Color(51,0,0));
 camera.writeToImage();
 
 }

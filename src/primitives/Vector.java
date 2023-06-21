@@ -26,6 +26,7 @@ public Vector(Double3 xyz) {
 			throw new IllegalArgumentException("Vector coudlnt be 0");
 
     }
+
 @Override
 public boolean equals(Object o) {
     if (this == o) return true;
