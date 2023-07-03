@@ -324,10 +324,10 @@ public class Camera {
 	    if (numOfRays == 1)
 	        return List.of(constructRay(nX, nY, j, i));
 
-	    double Ry = height / nY;
-	    double Rx = width / nX;
-	    double Yi = (i - (nY - 1) / 2d) * Ry;
-	    double Xj = (j - (nX - 1) / 2d) * Rx;
+	    double Ry = height / nY;//height for pixel
+	    double Rx = width / nX;//width for pixel
+	    double Yi = (i - (nY - 1) / 2d) * Ry;//
+	    double Xj = (j - (nX - 1) / 2d) * Rx;//the distance between the center to the pixel
 
 	    double PRy = Ry / numOfRays; // height distance between each ray
 	    double PRx = Rx / numOfRays; // width distance between each ray
@@ -356,9 +356,9 @@ public class Camera {
      * @return beam of rays through pixel
      */
     private Ray constructRaysThroughPixel(double Ry,double Rx, double yi, double xj, int j, int i){
-        Point Pc = p0.add(vTo.scale(distance)); //the center of the screen point
+        Point Pc = p0.add(vTo.scale(distance)); //the center of the screen point from p0 add vTo from the camera the distance between the screen and camera
 
-        double y_sample_i =  (i *Ry + Ry/2d); //The pixel starting point on the y axis
+        double y_sample_i =  (i *Ry + Ry/2d); //The pixel starting point on the y axis the small pixel in the bigger one
         double x_sample_j=   (j *Rx + Rx/2d); //The pixel starting point on the x axis
 
         Point Pij = Pc; //The point at the pixel through which a beam is fired
@@ -370,10 +370,12 @@ public class Camera {
         //Moving the point through which a beam is fired on the y axis
         if (!isZero(y_sample_i + yi))
         {
-            Pij = Pij.add(vUp.scale(-y_sample_i -yi ));
+            Pij = Pij.add(vUp.scale(-y_sample_i -yi ));//moving to the opposite side
         }
         Vector Vij = Pij.subtract(p0);
         return new Ray(Vij,p0);//create the ray throw the point we calculate here
     }
+
+	
 
 }

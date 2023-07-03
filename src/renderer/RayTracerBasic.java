@@ -38,12 +38,13 @@ public class RayTracerBasic extends RayTracerBase
 	 {
 	 	if(rays == null)
 	 		return scene.background;
-	     Color color = scene.background;
+	     //Color color = scene.background;
+	 	Color color=Color.BLACK;
 	     for (Ray ray : rays) 
 	     {
 	     	color = color.add(traceRay(ray));
 	     }
-	     color = color.add(scene.ambientLight.getIntensity());
+	     //color = color.add(scene.ambientLight.getIntensity());
 	     int size = rays.size();
 	     return color.reduce(size);
 	

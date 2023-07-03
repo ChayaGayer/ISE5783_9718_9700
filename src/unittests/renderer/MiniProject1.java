@@ -4,7 +4,6 @@
 package unittests.renderer;
 
 import org.junit.jupiter.api.Test;
-
 import geometries.*;
 import lighting.*;
 import primitives.*;
@@ -16,12 +15,9 @@ class MiniProject1 {
 
 	private Scene scene = new Scene("Test scene");
 
-	/**
-	 * Produce a picture of a two triangles lighted by a spot light with a partially
-	 * transparent Sphere producing partial shadow
-	 */
+	
 	@Test
-	public void trianglesTransparentSphere() 
+	public void Sphere1() 
 	{
 		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
 				.setVPSize(200, 200).setVPDistance(1000);
@@ -48,7 +44,7 @@ class MiniProject1 {
 	}
 	
 	@Test
-	public void trianglesTransparentSphere2() 
+	public void Sphere2() 
 	{
 		int numOfRays=80;
 		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //

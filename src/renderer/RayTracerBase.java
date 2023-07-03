@@ -32,7 +32,7 @@ public abstract class RayTracerBase
      * @param rays
      * @return
      */
-    public abstract Color traceRay(List<Ray> rays);
+    abstract Color traceRay(List<Ray> rays);
     
 }
 
