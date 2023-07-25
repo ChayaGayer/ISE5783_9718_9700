@@ -2,138 +2,87 @@ package geometries;
 import static primitives.Util.*;
 import java.util.List;
 
+
 import primitives.*;
 
 
-// a class for a plane
+/**
+ * Class Plane is the basic class representing a plane in Cartesian
+ * 3-Dimensional coordinate system.
+ * 
+ * @author Shira Gayer 214309700 ,Chaya Gayer 214309718
+ */
+
 public class Plane extends Geometry {
 
-	private Point p0;
-	private Vector normal;
+	private final Point q0;
+	private final Vector normal;
+
 	/**
-	 *  constructor of plane that gets 3 points. save one and calculates the normal to the plane
-	 * @param p1 first point in the plane
-	 * @param p2 second point in the plane
-	 * @param p3 third point in the plane
+	 * Plane constructor based on 3 points on the plane.
+	 * 
+	 * @param p1 point on the plane
+	 * @param p2 point on the plane
+	 * @param p3 point on the plane
 	 */
-public Plane(Point p1,Point p2,Point p3)
-	{
-	Vector v1 = (p1.subtract(p2));//get one vector on plane
-	Vector v2 = (p1.subtract(p3));//get second vector on plane
-	this.normal = v1.crossProduct(v2).normalize();//if v1 and v2 are on the same direction of vector- the cross product and the normal will be zero vector.		
-	this.p0 = p1;
-}
-	
-/**
- * constructor that get a point and the normal vector
- * @param q0
- * @param normal
- *
- */
-public Plane(Point q0,Vector normal)
-{
-this.p0=q0;
-this.normal=normal.normalize();
-}
-/**
- * get the point in the plane function
- * @return the point in the plane
- */
-public Point getP0() {
-    return p0;
-}
-/**
- * get normal to the plane function
- * @return normal to the plane
- */
-public Vector getNormal() {
-    return normal;
-}
-
-@Override
-/**
- *  function that returns the vector normal to the plain in the point p
- *  @param p is a point
- *  @return the the normal to the plane
- */
-public Vector getNormal(Point point) {
-    return normal;
-}
-/**
- * Finds the intersection point(s) of a given Ray with the Plane.
-*@param myRay the Ray to intersect with the Plane
-*@return a List of Point objects representing the intersection point(s) of the Ray and the Plane.
-If no intersection occurs, returns null.
-*@throws IllegalArgumentException if the given Ray or any of its components are null or uninitialized
- */
-/*@Override
-
-public List<Point> findIntersections(Ray myRay) {
-	double nv = normal.dotProduct(myRay.getDir());
-	if (Util.isZero(nv))
-	{
-		return null;
+	public Plane(Point p1, Point p2, Point p3) {
+		q0 = p1;
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
+		normal = v1.crossProduct(v2).normalize();
 	}
-	
-	try 
-	{
-		// Calculate the parameter t of the Ray equation for the intersection point
-		Vector pSubtractP0 = p0.subtract(myRay.getP0());
-		double t = Util.alignZero((normal.dotProduct(pSubtractP0))/nv);
 
-		if(t <= 0)
-		{
+	/**
+	 * Plane constructor based on a point and a normal vector perpendicular to the
+	 * plane.
+	 * 
+	 * @param p   point on the plane
+	 * @param vec normal vector to the plane
+	 */
+	public Plane(Point p, Vector vec) {
+		q0 = p;
+		normal = vec.normalize();
+	}
+
+	@Override
+	public Vector getNormal(Point p) {
+		return normal;
+	}
+
+	/**
+	 * gets normal vector
+	 * 
+	 * @return normal to plane
+	 */
+	public Vector getNormal() {
+		return normal;
+	}
+
+	@Override
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double dis) {
+		Point point = ray.getP0();
+		if (point.equals(this.q0))
 			return null;
-		}
-		return List.of(new Point((myRay.getPoint(t)).getXyz()));
+		double numerator = this.normal.dotProduct(this.q0.subtract(point));
+		double denominator = this.normal.dotProduct(ray.getDir());
+		if (isZero(numerator) || isZero(denominator))
+			return null;
+		double t = alignZero(numerator / denominator);
+		return t <= 0 || alignZero(t - dis) > 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
 	}
-	// If an exception is thrown during the calculation of the intersection, return null
-	catch(Exception ex) 
-	{
-		return null;
+
+	@Override
+	public String toString() {
+		return "" + q0 + ", " + normal;
 	}
-}*/
-/**
- * Finding intersection-geoPoints with a given ray
- * @param ray A ray
- * @return All the intersection-geoPoints of this plain and the given ray
- */
-@Override
-protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-    Point P0 = ray.getP0(); // according to the illustration P0 is the same point of the ray's P0 (that's why the definition))
-    Vector v = ray.getDir(); // according to the illustration v is the same vector of the ray's vector (that's why the definition))
 
-    if (this.p0.equals(P0)) { // if the ray starting from the plane it doesn't cut the plane at all
-        return null; // so return null
-    }
+	/**
+	 * get the point of the definition of the plane
+	 * 
+	 * @return point
+	 */
+	public Point getPoint() {
+		return q0;
+	}
 
-    Vector n = this.normal; // the normal to the plane
-
-    double nv = n.dotProduct(v); // the formula's denominator of "t" (t =(n*(Q-P0))/nv)
-
-    // ray is lying on the plane axis
-    if (isZero(nv)) { // can't divide by zero (nv is the denominator)
-        return null;
-    }
-
-    Vector Q0_P0 = this.p0.subtract(P0);
-    double nP0Q0 = alignZero(n.dotProduct(Q0_P0));
-
-    // t should be bigger than 0
-    if (isZero(nP0Q0)) {
-        return null;
-    }
-
-    double t = alignZero(nP0Q0 / nv);
-
-    // t should be bigger than 0
-    if (t <= 0) {
-        return null;
-    }
-
-    // "this" - the specific geometry, "rey.getPoint(t)" - the point that the ray
-    // cross the geometry
-    return List.of(new GeoPoint(this, ray.getPoint(t)));
 }
-}
-

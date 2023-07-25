@@ -5,10 +5,12 @@ package renderer;
 import static primitives.Util.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 
 import primitives.*;
+import renderer.PixelManager.Pixel;
 /**
  * @author chaya gayer ,shira gayer
  *
@@ -28,6 +30,10 @@ public class Camera {
     private ImageWriter imageWriter; // The image writer used for output
     private RayTracerBase rayTracer; // The ray tracer used for rendering
     private int numOfRays=1;//the paramter of the number of rays
+
+	private int threadsCount = 0;
+	private double printInterval = 0;
+	private PixelManager pixelManager;
    
 
     /**
@@ -189,7 +195,8 @@ public class Camera {
 	@param rayTracer The ray tracer object.
 	@return The Camera object itself.
 	*/
-	public Camera setRayTracer(RayTracerBase rayTracer) {
+	public Camera setRayTracer(RayTracerBase rayTracer)
+	{
 	this.rayTracer = rayTracer;
 	return this;
 	}
@@ -199,7 +206,8 @@ public class Camera {
 	@param imageWriter The image writer object.
 	@return The Camera object itself.
 	*/
-	public Camera setImageWriter(ImageWriter imageWriter) {
+	public Camera setImageWriter(ImageWriter imageWriter)
+	{
 	this.imageWriter = imageWriter;
 	return this;
 	}
@@ -215,8 +223,11 @@ public class Camera {
 	    throw new MissingResourceException("Missing filed in camera","","");
 	if (this.rayTracer == null)
 	throw new UnsupportedOperationException("Missing rayTracerBase");
-	for (int i = 0; i < imageWriter.getNx(); i++)
+	pixelManager = new PixelManager(imageWriter.getNy(),  imageWriter.getNx(), printInterval);
+	if (threadsCount == 0)
 	{
+	 for (int i = 0; i < imageWriter.getNx(); i++)
+	 {
 		for (int j = 0; j < imageWriter.getNy(); j++)	
 		{
 			if(numOfRays == 1 || numOfRays == 0)
@@ -233,23 +244,34 @@ public class Camera {
 			}
 			
 		}
+	 }	
 	}
-	return this;
+		else
+		{
+			var threads = new LinkedList<Thread>(); // list of threads
+			while (threadsCount-- > 0) // add appropriate number of threads
+				threads.add(new Thread(() -> { // add a thread with its code
+					Pixel pixel; // current pixel(row,col)
+					// allocate pixel(row,col) in loop until there are no more pixels
+					while ((pixel = pixelManager.nextPixel()) != null)
+						// cast ray through pixel (and color it – inside castRay)
+						castRay(pixel.col(), pixel.row(), imageWriter.getNx(),  imageWriter.getNy());
+				}));
+			// start all the threads
+			for (var thread : threads)
+				thread.start();
+			// wait until all the threads have finished
+			try {
+				for (var thread : threads)
+					thread.join();
+			} catch (InterruptedException ignore) {
+			}
+		}
+		return this;
 	}
 
-	/*for (int i = 0; i < this.imageWriter.getNy(); i++) 
-	{
-	   for (int j = 0; j < this.imageWriter.getNx(); j++)
-	     {
-		
-	      Color color = castRay(this.imageWriter.getNx(),this.imageWriter.getNy(),j, i);
-	 
-	    this.imageWriter.writePixel(j, i, color);
-	     }
-	}
-	return this;
-	}*/
 
+	
 	/**
 
 	Casts a ray through a specified pixel and returns the color of the intersection point.
@@ -341,6 +363,7 @@ public class Camera {
 	    }
 	    sample_rays.add(constructRay(nX, nY, j, i)); // add the center screen ray
 	    return sample_rays;
+	    
 	}
 
 	 /**
@@ -375,6 +398,34 @@ public class Camera {
         Vector Vij = Pij.subtract(p0);
         return new Ray(Vij,p0);//create the ray throw the point we calculate here
     }
+
+    /**
+	 * amount of threads setter for multi-threading
+	 * 
+	 * @param threads number of threads to run at the same time
+	 * @return camera (builder)
+	 */
+	public Camera setMultiThreading(int threads) {
+		if (threads < 0)
+			throw new IllegalArgumentException("number of threads must not be negative");
+		threadsCount = threads;
+		return this;
+	}
+
+	/**
+	 * interval setter for debug print
+	 * 
+	 * @param interval the print interval
+	 * @return camera (builder)
+	 */
+	public Camera setDebugPrint(double interval) {
+		if (interval < 0)
+			throw new IllegalArgumentException("print interval must not be negative");
+		printInterval = interval;
+		return this;
+	}
+
+	
 
 	
 

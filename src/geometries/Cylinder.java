@@ -17,7 +17,7 @@ public class Cylinder extends Tube
 	 * @param axisRay The ray of the cylinder's axis
 	 */
 	public Cylinder(Ray axisRay, double radius,double height) {
-		super(radius, axisRay);
+		super(axisRay, radius);
 		 this.height= height;
 	}
 	/**

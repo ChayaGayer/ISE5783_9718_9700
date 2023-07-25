@@ -20,6 +20,7 @@ public class RayTracerBasic extends RayTracerBase
 	private static final int MAX_CALC_COLOR_LEVEL = 10;
 	private static final double MIN_CALC_COLOR_K = 0.001;
 	 private static final Double3 INIT_CALC_COLOR_K = Double3.ONE;
+	private int numberOfRays=1;
 
     public RayTracerBasic(Scene scene) {
         super(scene);
@@ -30,6 +31,11 @@ public class RayTracerBasic extends RayTracerBase
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
         return intersections == null ? scene.background : calcColor(ray.findClosestGeoPoint(intersections), ray);
     }
+    public RayTracerBasic setNumberOfRays(int numberOfRays)
+	{
+		this.numberOfRays=numberOfRays;
+		return this;
+	}
     /**
 	  * @param rays List of surrounding rays
 	  * @return average color

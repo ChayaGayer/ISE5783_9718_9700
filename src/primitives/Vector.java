@@ -1,7 +1,10 @@
 package primitives;
 
-//class for the vector
-public class Vector extends Point{
+///class for the vector
+
+public class Vector extends Point
+{
+	private Point head;
 /**
  * constructor that get three double numbers 
  * @param d1
@@ -13,8 +16,8 @@ public Vector(double d1,double d2,double d3)
 		
 	  super(d1,d2,d3);
 	  if(this.xyz.equals(Double3.ZERO))
-	throw new IllegalArgumentException("isn't lagal-Vector 0");
-		// TODO Auto-generated constructor stub
+	  throw new IllegalArgumentException("isn't lagal-Vector 0");
+		
 	}
 /**
  * constructor that get an object of Double3

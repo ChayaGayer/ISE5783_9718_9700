@@ -7,7 +7,9 @@ public abstract class RadialGeometry extends Geometry {
  * constructor for the radius
  * @param Radius
  */
-	public RadialGeometry( double Radius) {
+	public RadialGeometry( double Radius) 
+	{
+		
 		this.radius=Radius;
 	}
 

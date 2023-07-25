@@ -82,6 +82,28 @@ public double distance(Point p)
 	return (Math.sqrt(distanceSquared( p)));
 }
 
+/**
+ * 
+ * @return x double
+ */
+public double getX()
+{
+	return xyz.d1;
+}
+/**
+ * 
+ * @return y double
+ */
+public double getY() {
+	return xyz.d2;
+}
+/**
+ * 
+ * @return z double
+ */
+public double getZ() {
+	return xyz.d3;
+}
 
 
 

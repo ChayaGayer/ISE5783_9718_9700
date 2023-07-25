@@ -25,5 +25,6 @@ abstract class Light {
 	protected Light(Color intensity) {
 		this.intensity = intensity;
 	} 
+	
 
 }
